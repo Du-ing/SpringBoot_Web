@@ -17,6 +17,7 @@ public class EmployeeDao {
 
     @Autowired
     private DepartmentDao departmentDao;
+
     static {
         employees.put(1001,new Employee(1001,"AA","A123456@qq.com",1,new Department(101,"教学部")));
         employees.put(1002,new Employee(1002,"BB","B123456@qq.com",0,new Department(101,"市场部")));
@@ -28,13 +29,17 @@ public class EmployeeDao {
     //主键自增
     private static Integer initId = 1006;
     //增加一个员工
-    public void add(Employee employee){
-        if (employee.getId() == null){
-            employee.setId(initId++);
+    public void addEmp(String lastName,String Email,String gender,String department){
+        int gender1 = gender.equals("男") ? 1 : 0;
+        Department d = null;
+        for (Department department1 : departmentDao.getAllDepartment()) {
+            if (department1.getDepartmentName().equals(department)){
+                d = department1;
+                break;
+            }
         }
-        employee.setDepartment(departmentDao.getDepartmentById(employee.getDepartment().getId()));
-
-        employees.put(employee.getId(),employee);
+        Employee emp = new Employee(initId++,lastName,Email,gender1,d);
+        employees.put(emp.getId(),emp);
     }
 
     //查询全部员工
@@ -48,7 +53,7 @@ public class EmployeeDao {
     }
 
     //删除员工
-    public void removeEmploeeById(Integer id){
+    public void removeEmployeeById(Integer id){
         employees.remove(id);
     }
 }
