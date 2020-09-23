@@ -29,7 +29,7 @@ public class EmployeeDao {
     //主键自增
     private static Integer initId = 1006;
     //增加一个员工
-    public void addEmp(String lastName,String Email,String gender,String department){
+    public void addEmployee(String lastName,String Email,String gender,String department){
         int gender1 = gender.equals("男") ? 1 : 0;
         Department d = null;
         for (Department department1 : departmentDao.getAllDepartment()) {
@@ -55,5 +55,19 @@ public class EmployeeDao {
     //删除员工
     public void removeEmployeeById(Integer id){
         employees.remove(id);
+    }
+
+    //修改员工信息
+    public void updateEmployee(Integer id,String lastName,String Email,String gender,String department){
+        int gender1 = gender.equals("男") ? 1 : 0;
+        Department d = null;
+        for (Department department1 : departmentDao.getAllDepartment()) {
+            if (department1.getDepartmentName().equals(department)){
+                d = department1;
+                break;
+            }
+        }
+        Employee employee = new Employee(id,lastName,Email,gender1,d);
+        employees.replace(id,employee);
     }
 }

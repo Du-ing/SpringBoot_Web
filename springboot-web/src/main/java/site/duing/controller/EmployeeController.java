@@ -3,6 +3,7 @@ package site.duing.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import site.duing.dao.EmployeeDao;
@@ -28,21 +29,29 @@ public class EmployeeController {
         return "emp/add";
     }
 
+    @RequestMapping("/addEmp")
+    public String addEmp(String lastName,String Email,String gender,String department){
+        employeeDao.addEmployee(lastName,Email,gender,department);
+        return "redirect:/emps";
+    }
+
     @RequestMapping("/deleteEmp")
     public String deleteEmp(Integer id){
         employeeDao.removeEmployeeById(id);
         return "emp/list";
     }
 
-    @RequestMapping("/addEmp")
-    public String addEmp(String lastName,String Email,String gender,String department){
-        employeeDao.addEmp(lastName,Email,gender,department);
-        return "redirect:/emps";
+    @RequestMapping("/update/{id}")
+    public String toUpdate(@PathVariable("id") Integer id,Model model){
+        //查出原来的信息
+        Employee employee = employeeDao.getEmployeeById(id);
+        model.addAttribute("emp",employee);
+        return "emp/update";
     }
 
     @RequestMapping("/updateEmp")
-    @ResponseBody
-    public String updateEmp(){
-        return "update";
+    public String updateEmp(Integer id,String lastName,String Email,String gender,String department){
+        employeeDao.updateEmployee(id,lastName,Email,gender,department);
+        return "redirect:/emps";
     }
 }

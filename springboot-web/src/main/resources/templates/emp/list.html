@@ -82,7 +82,7 @@
 									<td th:text="${emp.getDepartment().getDepartmentName()}"></td>
 									<td th:text="${#dates.format(emp.getBirth(),'yyyy-MM-dd')}"></td>
 									<td>
-										<button class="btn btn-sm btn-primary">编辑</button>
+										<a class="btn btn-sm btn-primary" th:href="@{/update/}+${emp.getId()}">编辑</a>
 										<button class="btn btn-sm btn-danger">删除</button>
 									</td>
 								</tr>
